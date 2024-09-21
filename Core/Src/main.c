@@ -36,9 +36,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define RED 0
-#define YELLOW 1
-#define GREEN 2
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -110,40 +107,59 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int state = RED;
-  int counter = 9;
-  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 1);
+  led7_SetDigit(1, 0, 0);
+  led7_SetDigit(5, 1, 0);
+  led7_SetDigit(4, 2, 0);
+  led7_SetDigit(7, 3, 0);
   test_7seg();
-  setTimer2(5000);
+  setTimer2(1000);
+  int state = 1;
   while (1)
   {
-	  switch (state) {
-		  case RED:
-			  if (flag_timer2) {
-				  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 0);
-				  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
-				  setTimer2(3000);
-				  state = GREEN;
-			  }
-			  break;
-		  case GREEN:
-			  if (flag_timer2) {
-				  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 0);
-				  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 1);
+	  switch(state) {
+	  	  case 1:
+	  		  if (flag_timer2) {
+	  			  led7_SetDigit(7, 0, 0);
+	  			  led7_SetDigit(1, 1, 0);
+	  			  led7_SetDigit(5, 2, 0);
+	  			  led7_SetDigit(4, 3, 0);
+	  			  state = 2;
+	  			  setTimer2(1000);
+	  		  }
+	  		  break;
+	  	  case 2:
+	  		  if (flag_timer2) {
+				  led7_SetDigit(4, 0, 0);
+				  led7_SetDigit(7, 1, 0);
+				  led7_SetDigit(1, 2, 0);
+				  led7_SetDigit(5, 3, 0);
+				  state = 3;
 				  setTimer2(1000);
-				  state = YELLOW;
 			  }
-			  break;
-		  case YELLOW:
-			  if (flag_timer2) {
-				  HAL_GPIO_WritePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin, 0);
-				  HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, 1);
-				  setTimer2(5000);
-				  state = RED;
+	  		  break;
+	  	  case 3:
+	  		  if (flag_timer2) {
+				  led7_SetDigit(5, 0, 0);
+				  led7_SetDigit(4, 1, 0);
+				  led7_SetDigit(7, 2, 0);
+				  led7_SetDigit(1, 3, 0);
+				  state = 4;
+				  setTimer2(1000);
 			  }
-			  break;
-		  default:
-			  break;
+	  		  break;
+	  	  case 4:
+	  		  if (flag_timer2) {
+	  			  led7_SetDigit(1, 0, 0);
+	  			  led7_SetDigit(5, 1, 0);
+	  			  led7_SetDigit(4, 2, 0);
+	  			  led7_SetDigit(7, 3, 0);
+				  state = 1;
+				  setTimer2(1000);
+			  }
+	  		  break;
+	  	  default:
+	  		  state = 1;
+	  		  break;
 	  }
     /* USER CODE END WHILE */
 
